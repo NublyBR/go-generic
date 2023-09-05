@@ -18,6 +18,7 @@ type OrderedMap[K comparable, V any] struct {
 	list bool
 }
 
+// New empty OrderedMap
 func NewOrderedMap[K comparable, V any]() *OrderedMap[K, V] {
 	return &OrderedMap[K, V]{
 		umap: make(map[K]V),
@@ -25,15 +26,34 @@ func NewOrderedMap[K comparable, V any]() *OrderedMap[K, V] {
 	}
 }
 
+// New OrderedMap from regular map, with keys sorted
+func NewOrderedMapFromSorted[K orderable, V any](mp map[K]V) *OrderedMap[K, V] {
+	var keys = make([]K, 0, len(mp))
+
+	for key := range mp {
+		keys = append(keys, key)
+	}
+
+	Sort(keys)
+
+	return &OrderedMap[K, V]{
+		umap: CopyMap(mp),
+		keys: keys,
+	}
+}
+
+// Mark OrderedMap to be encoded as a list of lists when marshaled as JSON
 func (om *OrderedMap[K, V]) AsList() *OrderedMap[K, V] {
 	om.list = true
 	return om
 }
 
+// Sort OrderedMap keys by given less function
 func (om *OrderedMap[K, V]) SortKeys(less func(a, b K) bool) {
 	SortFunc(om.keys, less)
 }
 
+// Set value in OrderedMap
 func (om *OrderedMap[K, V]) Set(key K, value V) {
 	if _, ok := om.umap[key]; ok {
 		om.umap[key] = value
@@ -42,19 +62,21 @@ func (om *OrderedMap[K, V]) Set(key K, value V) {
 
 	om.umap[key] = value
 	om.keys = append(om.keys, key)
-
 }
 
+// Get value in map by key
 func (om *OrderedMap[K, V]) Get(key K) V {
 	return om.umap[key]
 }
 
+// Get value in map by key with ok
 func (om *OrderedMap[K, V]) GetOk(key K) (V, bool) {
 	v, ok := om.umap[key]
 
 	return v, ok
 }
 
+// Get value in map by key or default
 func (om *OrderedMap[K, V]) GetOr(key K, default_ V) V {
 	if v, ok := om.umap[key]; ok {
 		return v
@@ -63,15 +85,18 @@ func (om *OrderedMap[K, V]) GetOr(key K, default_ V) V {
 	return default_
 }
 
+// Check if given key exists in map
 func (om *OrderedMap[K, V]) Exists(key K) bool {
 	_, ok := om.umap[key]
 	return ok
 }
 
+// Convert to regular unordered map
 func (om *OrderedMap[K, V]) ToMap() map[K]V {
 	return CopyMap(om.umap)
 }
 
+// Delete given key
 func (om *OrderedMap[K, V]) Delete(key K) V {
 	var (
 		v   V
@@ -97,16 +122,32 @@ func (om *OrderedMap[K, V]) Delete(key K) V {
 	return v
 }
 
+// Get all keys
 func (om *OrderedMap[K, V]) Keys() []K {
 	return CopySlice(om.keys)
 }
 
+// Get all values
+func (om *OrderedMap[K, V]) Values() []V {
+	var vals = make([]V, len(om.keys))
+
+	for i, key := range om.keys {
+		vals[i] = om.umap[key]
+	}
+
+	return vals
+}
+
+// Iterate over OrderedMap with function
 func (om *OrderedMap[K, V]) Iter(fn func(K, V)) {
 	for _, k := range om.keys {
 		fn(k, om.umap[k])
 	}
 }
 
+// Iterate over OrderedMap with function that can break at any point
+//
+// Return false to break, true to continue
 func (om *OrderedMap[K, V]) IterBreak(fn func(K, V) bool) {
 	for _, k := range om.keys {
 		if !fn(k, om.umap[k]) {
@@ -115,6 +156,9 @@ func (om *OrderedMap[K, V]) IterBreak(fn func(K, V) bool) {
 	}
 }
 
+// Get string representation of OrderedMap
+//
+// ordered-map[key1: val1, key2: val2]
 func (om *OrderedMap[K, V]) String() string {
 	buf := bytes.NewBuffer(nil)
 

@@ -2,14 +2,19 @@ package generic
 
 type Stack[T any] []T
 
+// Create new empty or pre-populated stack
 func NewStack[T any](elems ...T) Stack[T] {
 	return Stack[T](elems)
 }
 
+// Push elements to the stack
 func (s *Stack[T]) Push(elem ...T) {
 	*s = append(*s, elem...)
 }
 
+// Pop an element from the stack
+//
+// Info: Popping from an empty stack will cause a panic
 func (s *Stack[T]) Pop() T {
 	var (
 		ln  = len(*s)
@@ -21,6 +26,9 @@ func (s *Stack[T]) Pop() T {
 	return ret
 }
 
+// Pop N elements from the stack
+//
+// Info: Popping from an empty stack will cause a panic
 func (s *Stack[T]) PopN(n int) []T {
 	var (
 		ln  = len(*s)
@@ -34,10 +42,12 @@ func (s *Stack[T]) PopN(n int) []T {
 	return ret
 }
 
+// Get current length of the stack
 func (s *Stack[T]) Len() int {
 	return len(*s)
 }
 
+// Empty the stack
 func (s *Stack[T]) Clear() {
 	*s = (*s)[:0]
 }
