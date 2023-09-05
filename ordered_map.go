@@ -138,6 +138,11 @@ func (om *OrderedMap[K, V]) Values() []V {
 	return vals
 }
 
+// Get OrderedMap length
+func (om *OrderedMap[K, V]) Len() int {
+	return len(om.keys)
+}
+
 // Iterate over OrderedMap with function
 func (om *OrderedMap[K, V]) Iter(fn func(K, V)) {
 	for _, k := range om.keys {
