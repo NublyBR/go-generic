@@ -1,9 +1,18 @@
 package generic
 
-type orderable interface {
-	int | int8 | int16 | int32 | int64 | float32 | float64 | string
-}
+import "cmp"
+
+type orderable cmp.Ordered
 
 type numeric interface {
-	int | int8 | int16 | int32 | int64 | float32 | float64
+	signed | unsigned
+}
+
+type signed interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64 |
+		~float32 | ~float64
+}
+
+type unsigned interface {
+	~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr
 }

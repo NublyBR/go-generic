@@ -50,6 +50,8 @@ func Min[T orderable](args ...T) T {
 }
 
 // Average calculates the average value of the arguments.
+//
+// This function will round implicitly with integer types.
 func Average[T numeric](args ...T) T {
 	var sum T
 
@@ -70,4 +72,26 @@ func Clamp[T orderable](value, min, max T) T {
 	default:
 		return value
 	}
+}
+
+// MapRange linearly maps a value from the range [inMin, inMax] to the range [outMin, outMax].
+func MapRange[T numeric](value, inMin, inMax, outMin, outMax T) T {
+	switch {
+	case value <= inMin:
+		return outMin
+	case value >= inMax:
+		return outMax
+	default:
+		return outMin + (value-inMin)*(outMax-outMin)/(inMax-inMin)
+	}
+}
+
+func Abs[T signed](value T) T {
+	var zero T
+
+	if value < zero {
+		return -value
+	}
+
+	return value
 }

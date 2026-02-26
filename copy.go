@@ -9,8 +9,8 @@ func CopySlice[T any](slice []T) []T {
 
 func CopyMap[K comparable, V any](mp map[K]V) map[K]V {
 	var ret = make(map[K]V, len(mp))
-	for k, v := range mp {
-		ret[k] = v
+	for k := range mp {
+		ret[k] = mp[k]
 	}
 
 	return ret

@@ -5,8 +5,8 @@ func EqualsSlice[T comparable](a, b []T) bool {
 		return false
 	}
 
-	for i, elem := range a {
-		if elem != b[i] {
+	for i := range a {
+		if a[i] != b[i] {
 			return false
 		}
 	}
@@ -19,8 +19,8 @@ func EqualsSlice2[T comparable](a, b [][]T) bool {
 		return false
 	}
 
-	for i, elem := range a {
-		if !EqualsSlice(elem, b[i]) {
+	for i := range a {
+		if !EqualsSlice(a[i], b[i]) {
 			return false
 		}
 	}
@@ -33,11 +33,19 @@ func EqualsMap[K, V comparable](a, b map[K]V) bool {
 		return false
 	}
 
-	for k, elem := range a {
-		if other, ok := b[k]; !ok || elem != other {
+	for k := range a {
+		if a[k] != b[k] {
 			return false
 		}
 	}
 
 	return true
+}
+
+func EqualApprox[T numeric](lhs, rhs, delta T) bool {
+	if lhs > rhs {
+		return lhs-rhs < delta
+	}
+
+	return rhs-lhs < delta
 }

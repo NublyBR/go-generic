@@ -2,8 +2,8 @@ package generic
 
 // All checks if a given function fn returns true for all elements in the args slice of type T.
 func All[T any](fn func(T) bool, args ...T) bool {
-	for _, v := range args {
-		if !fn(v) {
+	for k := range args {
+		if !fn(args[k]) {
 			return false
 		}
 	}
@@ -13,8 +13,8 @@ func All[T any](fn func(T) bool, args ...T) bool {
 
 // Any checks if a given function fn returns true for at least one element in the args slice of type T.
 func Any[T any](fn func(T) bool, args ...T) bool {
-	for _, v := range args {
-		if fn(v) {
+	for k := range args {
+		if fn(args[k]) {
 			return true
 		}
 	}
