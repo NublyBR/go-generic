@@ -55,3 +55,26 @@ outer:
 
 	return ret
 }
+
+func UniqueBy[K comparable, T any](slice []T, fn func(T) K) []T {
+	var (
+		ret = make([]T, 0, len(slice))
+		key = make([]K, 0, len(slice))
+	)
+
+outer:
+	for _, v := range slice {
+		k := fn(v)
+
+		for _, cmp := range key {
+			if k == cmp {
+				continue outer
+			}
+		}
+
+		key = append(key, k)
+		ret = append(ret, v)
+	}
+
+	return ret
+}
