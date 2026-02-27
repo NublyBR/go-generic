@@ -2,7 +2,7 @@ package generic
 
 import "sort"
 
-type sortAB[A orderable, B any] struct {
+type sortAB[A Orderable, B any] struct {
 	a []A
 	b []B
 }
@@ -14,7 +14,7 @@ func (s sortAB[A, B]) Swap(i, j int) {
 	s.b[i], s.b[j] = s.b[j], s.b[i]
 }
 
-func Sort[T orderable](slice []T) {
+func Sort[T Orderable](slice []T) {
 	sort.Slice(slice, func(i, j int) bool {
 		return slice[i] < slice[j]
 	})
@@ -26,16 +26,16 @@ func SortFunc[T any](slice []T, less func(a, b T) bool) {
 	})
 }
 
-func SortBy[T any, K orderable](slice []T, fn func(T) K) {
+func SortBy[T any, K Orderable](slice []T, fn func(T) K) {
 	var order = &sortAB[K, T]{
-		a: Map(fn, slice...),
+		a: Map(slice, fn),
 		b: slice,
 	}
 
 	sort.Sort(order)
 }
 
-func Sorted[T orderable](slice []T) []T {
+func Sorted[T Orderable](slice []T) []T {
 	var ret = make([]T, len(slice))
 	copy(ret, slice)
 
@@ -53,7 +53,7 @@ func SortedFunc[T any](slice []T, less func(a, b T) bool) []T {
 	return ret
 }
 
-func SortedBy[T any, K orderable](slice []T, fn func(T) K) []T {
+func SortedBy[T any, K Orderable](slice []T, fn func(T) K) []T {
 	var ret = make([]T, len(slice))
 	copy(ret, slice)
 

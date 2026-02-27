@@ -2,17 +2,17 @@ package generic
 
 import "cmp"
 
-type orderable cmp.Ordered
+type Orderable cmp.Ordered
 
-type numeric interface {
-	signed | unsigned
+type Numeric interface {
+	Signed | Unsigned
 }
 
-type signed interface {
+type Signed interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64 |
 		~float32 | ~float64
 }
 
-type unsigned interface {
+type Unsigned interface {
 	~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr
 }

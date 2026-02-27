@@ -1,9 +1,9 @@
 package generic
 
-func Filter[T any](fn func(T) bool, args ...T) []T {
-	var ret = make([]T, 0, len(args))
+func Filter[T any](slice []T, fn func(T) bool) []T {
+	var ret = make([]T, 0, len(slice))
 
-	for _, a := range args {
+	for _, a := range slice {
 		if fn(a) {
 			ret = append(ret, a)
 		}
@@ -12,7 +12,7 @@ func Filter[T any](fn func(T) bool, args ...T) []T {
 	return ret
 }
 
-func FilterMap[K comparable, V any](fn func(K, V) bool, mp map[K]V) map[K]V {
+func FilterMap[K comparable, V any](mp map[K]V, fn func(K, V) bool) map[K]V {
 	var ret = make(map[K]V, len(mp))
 
 	for k, v := range mp {
@@ -24,11 +24,11 @@ func FilterMap[K comparable, V any](fn func(K, V) bool, mp map[K]V) map[K]V {
 	return ret
 }
 
-func Partition[T any](fn func(T) bool, args ...T) (match []T, rest []T) {
-	match = make([]T, 0, len(args))
-	rest = make([]T, 0, len(args))
+func Partition[T any](slice []T, fn func(T) bool) (match []T, rest []T) {
+	match = make([]T, 0, len(slice))
+	rest = make([]T, 0, len(slice))
 
-	for _, v := range args {
+	for _, v := range slice {
 		if fn(v) {
 			match = append(match, v)
 		} else {
@@ -77,4 +77,20 @@ outer:
 	}
 
 	return ret
+}
+
+type Once[K comparable] struct {
+	Keys []K
+}
+
+func (o *Once[K]) First(key K) bool {
+	for _, cmp := range o.Keys {
+		if key == cmp {
+			return false
+		}
+	}
+
+	o.Keys = append(o.Keys, key)
+
+	return true
 }

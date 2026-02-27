@@ -1,7 +1,7 @@
 package generic
 
 // Sum returns the sum of all arguments.
-func Sum[T orderable](args ...T) T {
+func Sum[T Orderable](args ...T) T {
 	var sum T
 
 	for _, elem := range args {
@@ -12,7 +12,7 @@ func Sum[T orderable](args ...T) T {
 }
 
 // Max returns the maximum value among the arguments.
-func Max[T orderable](args ...T) T {
+func Max[T Orderable](args ...T) T {
 	var max T
 
 	if len(args) == 0 {
@@ -31,7 +31,7 @@ func Max[T orderable](args ...T) T {
 }
 
 // Min returns the minimum value among the arguments.
-func Min[T orderable](args ...T) T {
+func Min[T Orderable](args ...T) T {
 	var min T
 
 	if len(args) == 0 {
@@ -52,7 +52,7 @@ func Min[T orderable](args ...T) T {
 // Average calculates the average value of the arguments.
 //
 // This function will round implicitly with integer types.
-func Average[T numeric](args ...T) T {
+func Average[T Numeric](args ...T) T {
 	var sum T
 
 	for _, elem := range args {
@@ -63,7 +63,7 @@ func Average[T numeric](args ...T) T {
 }
 
 // Clamp restricts a value to be within the range [min, max].
-func Clamp[T orderable](value, min, max T) T {
+func Clamp[T Orderable](value, min, max T) T {
 	switch {
 	case value < min:
 		return min
@@ -75,7 +75,7 @@ func Clamp[T orderable](value, min, max T) T {
 }
 
 // MapRange linearly maps a value from the range [inMin, inMax] to the range [outMin, outMax].
-func MapRange[T numeric](value, inMin, inMax, outMin, outMax T) T {
+func MapRange[T Numeric](value, inMin, inMax, outMin, outMax T) T {
 	switch {
 	case value <= inMin:
 		return outMin
@@ -86,7 +86,7 @@ func MapRange[T numeric](value, inMin, inMax, outMin, outMax T) T {
 	}
 }
 
-func Abs[T signed](value T) T {
+func Abs[T Signed](value T) T {
 	var zero T
 
 	if value < zero {

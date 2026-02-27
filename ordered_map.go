@@ -27,7 +27,7 @@ func NewOrderedMap[K comparable, V any]() *OrderedMap[K, V] {
 }
 
 // New OrderedMap from regular map, with keys sorted
-func NewOrderedMapFromSorted[K orderable, V any](mp map[K]V) *OrderedMap[K, V] {
+func NewOrderedMapFromSorted[K Orderable, V any](mp map[K]V) *OrderedMap[K, V] {
 	var keys = make([]K, 0, len(mp))
 
 	for key := range mp {

@@ -9,7 +9,7 @@ func TestMap(t *testing.T) {
 	var inp = []int{1, 2, 3}
 	var exp = []string{"1", "2", "3"}
 
-	var ret = Map(func(i int) string { return fmt.Sprint(i) }, inp...)
+	var ret = Map(inp, func(i int) string { return fmt.Sprint(i) })
 
 	var equals = true
 

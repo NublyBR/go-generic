@@ -1,10 +1,10 @@
 package generic
 
-func Map[A any, B any](fn func(A) B, args ...A) []B {
-	var ret = make([]B, len(args))
+func Map[A any, B any](slice []A, fn func(A) B) []B {
+	var ret = make([]B, len(slice))
 
-	for i := range args {
-		ret[i] = fn(args[i])
+	for i := range slice {
+		ret[i] = fn(slice[i])
 	}
 
 	return ret

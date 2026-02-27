@@ -42,7 +42,7 @@ func EqualsMap[K, V comparable](a, b map[K]V) bool {
 	return true
 }
 
-func EqualApprox[T numeric](lhs, rhs, delta T) bool {
+func EqualApprox[T Numeric](lhs, rhs, delta T) bool {
 	if lhs > rhs {
 		return lhs-rhs < delta
 	}
