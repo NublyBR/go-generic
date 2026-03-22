@@ -16,3 +16,15 @@ type Signed interface {
 type Unsigned interface {
 	~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr
 }
+
+type Item[K comparable, V any] struct {
+	Key   K
+	Value V
+}
+
+type Items[K comparable, V any] []Item[K, V]
+
+type Zipped[A, B any] struct {
+	A A
+	B B
+}
