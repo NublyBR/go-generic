@@ -1,5 +1,8 @@
 # go-generic
 
+> [!NOTE]
+> This project is under development. Breaking changes are to be expected.
+
 [![Go Reference](https://pkg.go.dev/badge/github.com/NublyBR/go-generic.svg)](https://pkg.go.dev/github.com/NublyBR/go-generic)
 [![Go Report Card](https://goreportcard.com/badge/github.com/NublyBR/go-generic)](https://goreportcard.com/report/github.com/NublyBR/go-generic)
 
